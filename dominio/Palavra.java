@@ -2,7 +2,7 @@ package dominio;
 
 import fabricas.LetraFactory;
 
-public class Palavra extends ObjetoDominioImpl{
+public class Palavra extends ObjetoDominioImpl {
 	
 	private Tema tema;
 	private LetraFactory factory;

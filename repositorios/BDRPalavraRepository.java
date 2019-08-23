@@ -1,20 +1,18 @@
 package repositorios;
 
-import java.util.HashSet;
-
 import dominio.Palavra;
 import dominio.Tema;
 
-public class MemoriaPalavraRepository implements PalavraRepository {
+public class BDRPalavraRepository implements PalavraRepository {
 
-	private static MemoriaPalavraRepository soleInstance;
-	private HashSet<Palavra> pool;
+
+	private static BDRPalavraRepository soleInstance;
 	
-	private MemoriaPalavraRepository() {}
+	private BDRPalavraRepository() {}
 	
-	public static MemoriaPalavraRepository getSoleInstance() {
+	public static BDRPalavraRepository getSoleInstance() {
 		if (soleInstance == null) {
-			soleInstance = new MemoriaPalavraRepository();
+			soleInstance = new BDRPalavraRepository();
 		}
 		return soleInstance;
 	}
