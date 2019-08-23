@@ -16,16 +16,10 @@ public class LetraImagemFactory extends LetraFactoryImpl {
 	}
 
 	@Override
-	public Letra getLetra(char codigo) {
-		// TODO Auto-generated method stub
-		return null;
+	protected Letra criarLetra(char codigo) {
+		return super.criarLetra(codigo);
 	}
 
-	@Override
-	public Letra getLetraEncoberta() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 	
 }
