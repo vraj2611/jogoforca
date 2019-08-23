@@ -1,6 +1,8 @@
 package repositorios;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import dominio.Jogador;
 import dominio.Rodada;
@@ -8,7 +10,7 @@ import dominio.Rodada;
 public class MemoriaRodadaRepository implements RodadaRepository {
 
 	private static MemoriaRodadaRepository soleInstance;
-	private HashSet<Rodada> pool;
+	private HashMap<Long, Rodada> pool;
 	
 	private MemoriaRodadaRepository() {}
 	
@@ -19,36 +21,58 @@ public class MemoriaRodadaRepository implements RodadaRepository {
 		return soleInstance;
 	}
 
-
+	@Override
+	public void inserir(Rodada rodada) throws RepositoryException {
+		if (this.pool.containsKey(rodada.getId())){
+			throw new RepositoryException();
+		}
+		this.pool.put(rodada.getId(), rodada);
+	}
 	
 	@Override
 	public void remover(Rodada rodada) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
+		if (!this.pool.containsKey(rodada.getId())){
+			throw new RepositoryException();
+		}
+		this.pool.remove(rodada.getId());
 	}
 
 	@Override
 	public void atualizar(Rodada rodada) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void inserir(Rodada rodada) throws RepositoryException {
-		// TODO Auto-generated method stub
+		this.remover(rodada);
+		this.inserir(rodada);
 		
 	}
 
 	@Override
 	public Rodada[] getPorJogador(Jogador jogador) {
-		// TODO Auto-generated method stub
-		return null;
+		HashSet<Rodada> rodadasDoJogador = new HashSet<Rodada>();
+		Iterator<Rodada> rodadas = this.pool.values().iterator();
+		while(rodadas.hasNext()) {
+			Rodada rodada = rodadas.next();
+			if (rodada.getJogador().equals(jogador)) {
+				rodadasDoJogador.add(rodada);
+			}
+		}
+		return (Rodada[])rodadasDoJogador.toArray(); 
 	}
 
 	@Override
 	public Rodada getPorId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.pool.get(id);
+	}
+
+	@Override
+	public long getProximoId() {
+		Long max = (long) 1;
+		Iterator<Rodada> rodadas = this.pool.values().iterator();
+		while(rodadas.hasNext()) {
+			Long id = rodadas.next().getId(); 
+			if ( id > max) {
+				max = id;
+			}
+		}
+		return max + 1;
 	}
 
 }

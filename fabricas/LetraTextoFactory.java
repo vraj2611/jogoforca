@@ -1,9 +1,15 @@
 package fabricas;
 
+import java.util.HashMap;
+
 import dominio.Letra;
+import dominio.LetraTexto;
 
 public class LetraTextoFactory extends LetraFactoryImpl {
 
+	private Letra encoberta;
+	private HashMap<Character, Letra> pool;
+	
 	private static LetraTextoFactory soleInstance;
 	
 	private LetraTextoFactory() {}
@@ -17,14 +23,18 @@ public class LetraTextoFactory extends LetraFactoryImpl {
 	
 	@Override
 	public Letra getLetra(char codigo) {
-		// TODO Auto-generated method stub
-		return null;
+		if (!this.pool.containsKey(codigo)) {
+			this.pool.put(codigo, new LetraTexto(codigo));
+		}
+		return this.pool.get(codigo);
 	}
 
 	@Override
 	public Letra getLetraEncoberta() {
-		// TODO Auto-generated method stub
-		return null;
+		if (encoberta == null) {
+			this.encoberta = new LetraTexto(new Character('*'));
+		}
+		return this.encoberta;
 	}
 
 }

@@ -1,6 +1,7 @@
 package repositorios;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import dominio.Jogador;
 
@@ -8,7 +9,7 @@ import dominio.Jogador;
 public class MemoriaJogadorRepository implements JogadorRepository {
 
 	private static MemoriaJogadorRepository soleInstance;
-	private HashSet<Jogador> pool;
+	private HashMap<Long, Jogador> pool;
 	
 	private MemoriaJogadorRepository() {}
 	
@@ -19,36 +20,58 @@ public class MemoriaJogadorRepository implements JogadorRepository {
 		return soleInstance;
 	}
 
+	@Override
+	public void inserir(Jogador jogador) throws RepositoryException {
+		if (this.pool.containsKey(jogador.getId())) {
+			throw new RepositoryException();
+		}
+		this.pool.put(jogador.getId(), jogador);
+	}
 
 	
 	@Override
 	public void remover(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
+		if (!this.pool.containsKey(jogador.getId())) {
+			throw new RepositoryException();
+		}
+		this.pool.remove(jogador.getId());
 	}
 
 	@Override
 	public void atualizar(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
+		this.remover(jogador);
+		this.inserir(jogador);
 	}
 
-	@Override
-	public void inserir(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
-	public Jogador[] getPorNome(String nome) {
-		// TODO Auto-generated method stub
+	public Jogador getPorNome(String nome) {
+		Iterator<Jogador> jogadores = this.pool.values().iterator();
+		while(jogadores.hasNext()) {
+			Jogador jogador = jogadores.next();
+			if (jogador.getNome().equals(nome)) {
+				return jogador;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public Jogador getPorId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.pool.get(id);
+	}
+
+	@Override
+	public long getProximoId() {
+		Long max = (long) 1;
+		Iterator<Jogador> jogadores = this.pool.values().iterator();
+		while(jogadores.hasNext()) {
+			Long id = jogadores.next().getId();
+			if ( id > max) {
+				max = id;
+			}
+		}
+		return max + 1;
 	}
 
 }

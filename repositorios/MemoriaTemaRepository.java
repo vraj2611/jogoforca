@@ -1,13 +1,14 @@
 package repositorios;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import dominio.Tema;
 
 public class MemoriaTemaRepository implements TemaRepository {
 
 	private static MemoriaTemaRepository soleInstance;
-	private HashSet<Tema> pool;
+	private HashMap<Long, Tema> pool;
 	
 	private MemoriaTemaRepository() {}
 	
@@ -18,43 +19,61 @@ public class MemoriaTemaRepository implements TemaRepository {
 		return soleInstance;
 	}
 
-
-	
+	@Override
+	public void inserir(Tema tema) throws RepositoryException {
+		if(this.pool.containsKey(tema.getId())) {
+			throw new RepositoryException();
+		}
+		this.pool.put(tema.getId(), tema);	
+	}
 	
 	@Override
 	public void remover(Tema tema) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
+		if(!this.pool.containsKey(tema.getId())) {
+			throw new RepositoryException();
+		}
+		this.pool.remove(tema.getId());
 	}
 
 	@Override
 	public void atualizar(Tema tema) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void inserir(Tema tema) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
+		this.remover(tema);
+		this.inserir(tema);
 	}
 
 	@Override
 	public Tema[] getTodos() {
-		// TODO Auto-generated method stub
-		return null;
+		return (Tema[])this.pool.values().toArray();
 	}
 
 	@Override
-	public Tema[] getPorNome(String nome) {
-		// TODO Auto-generated method stub
+	public Tema getPorNome(String nome) {
+		Iterator<Tema> temas = this.pool.values().iterator();
+		while(temas.hasNext()) {
+			Tema tema = temas.next();
+			if (tema.getNome().equals(nome)) {
+				return tema;
+			}
+		}
 		return null;
 	}
 
 	@Override
 	public Tema getPorId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.pool.get(id);
+	}
+
+	@Override
+	public long getProximoId() {
+		Long max = (long) 1;
+		Iterator<Tema> temas = this.pool.values().iterator();
+		while(temas.hasNext()) {
+			Long id = temas.next().getId(); 
+			if ( id > max) {
+				max = id;
+			}
+		}
+		return max + 1;
 	}
 
 }

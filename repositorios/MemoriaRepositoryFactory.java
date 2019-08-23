@@ -14,9 +14,6 @@ public class MemoriaRepositoryFactory implements RepositoryFactory {
 		return soleInstance;
 	}
 
-
-	
-	
 	@Override
 	public JogadorRepository getJogadorRepository() {
 		return MemoriaJogadorRepository.getSoleInstance();

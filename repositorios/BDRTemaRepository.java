@@ -41,7 +41,7 @@ public class BDRTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public Tema[] getPorNome(String nome) {
+	public Tema getPorNome(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,6 +50,12 @@ public class BDRTemaRepository implements TemaRepository {
 	public Tema getPorId(long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public long getProximoId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

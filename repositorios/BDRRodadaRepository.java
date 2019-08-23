@@ -46,4 +46,10 @@ public class BDRRodadaRepository implements RodadaRepository {
 		return null;
 	}
 
+	@Override
+	public long getProximoId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

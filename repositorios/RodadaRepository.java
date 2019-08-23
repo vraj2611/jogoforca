@@ -3,7 +3,7 @@ package repositorios;
 import dominio.Jogador;
 import dominio.Rodada;
 
-public interface RodadaRepository {
+public interface RodadaRepository extends DomainRepository {
 	
 	public void remover(Rodada rodada) throws RepositoryException;
 	public void atualizar(Rodada rodada) throws RepositoryException;

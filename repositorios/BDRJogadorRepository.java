@@ -36,7 +36,7 @@ public class BDRJogadorRepository implements JogadorRepository {
 	}
 
 	@Override
-	public Jogador[] getPorNome(String nome) {
+	public Jogador getPorNome(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -45,6 +45,12 @@ public class BDRJogadorRepository implements JogadorRepository {
 	public Jogador getPorId(long id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public long getProximoId() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
