@@ -1,6 +1,6 @@
 package dominio;
 
-public class Jogador extends ObjetoDominioImpl{
+public class Jogador extends ObjetoDominioImpl {
 	private String nome;
 	private int pontuacao = 0;
 	
