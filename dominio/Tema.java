@@ -10,7 +10,6 @@ public class Tema extends ObjetoDominioImpl{
 		this.nome = nome;
 	}
 	
-	
 	public String getNome() {
 		return nome;
 	}

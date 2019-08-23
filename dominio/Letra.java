@@ -13,9 +13,11 @@ public abstract class Letra {
 	}
 	
 	public final String toString() {
-		return "q";//this.codigo
+		return String.valueOf(this.codigo);
 	}
 
+	public abstract void exibir();
+	
 	@Override
 	public int hashCode() {
 		return this.codigo + this.getClass().hashCode();
