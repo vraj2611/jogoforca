@@ -2,12 +2,17 @@ package dominio;
 
 public class BonecoTexto implements Boneco {
 
-	public BonecoTexto() {}
+	private BonecoTexto() {}
 	
 	@Override
 	public void exibir(int partes) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public BonecoTexto getSoleInstance() {
+		BonecoTexto bonecoTexto = new BonecoTexto();
+		return bonecoTexto;
 	}
 
 }
