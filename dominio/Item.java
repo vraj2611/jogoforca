@@ -91,7 +91,7 @@ public class Item extends ObjetoDominioImpl {
 	}
 	
 	public Letra[] getLetrasDescobertas() {
-		return new Letra[4];
+		return new Letra[3];
 	}
 
 }
