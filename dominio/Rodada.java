@@ -1,5 +1,7 @@
 package dominio;
 
+import java.util.HashSet;
+
 public class Rodada extends ObjetoDominioImpl {
 
 	private int maxPalavras = 3;
@@ -7,25 +9,24 @@ public class Rodada extends ObjetoDominioImpl {
 	private int pontosQuandoDescobreTodasAsPalavras = 100; 
 	private int pontosPorLetraEncoberta = 15;
 	
-	private Item[] itens;
 	private Jogador jogador;
-<<<<<<< HEAD
 	private Boneco boneco;
-	
-	public Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador, Boneco boneco) {
-		super(id);
-		this.jogador = jogador;
-		this.boneco = boneco;
-		this.itens = itens;
-	}
-	public Rodada(long id, Palavra[] palavra, Jogador jogador, Boneco boneco) {
-		super(id);
-		this.jogador = jogador;
-		this.boneco = boneco;
-=======
+	private Item[] itens;
 	private Letra[] erradas;
-	private Boneco boneco;
-	private Palavra[] palavra;
+	
+	public Rodada(long id, Palavra[] palavras, Jogador jogador, Boneco boneco) {
+		super(id);
+		this.jogador = jogador;
+		this.boneco = boneco;
+		int qtdPalavras = palavras.length;
+		if (qtdPalavras > maxPalavras) {
+			qtdPalavras = maxPalavras;
+		}
+		this.itens = new Item[qtdPalavras];
+		for(int c = 0; c < qtdPalavras; c++) {
+			this.itens[c] = new Item(c, palavras[c]);
+		}
+	}
 	
 	public Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador, Boneco boneco) {
 		super(id);
@@ -34,23 +35,14 @@ public class Rodada extends ObjetoDominioImpl {
 		this.jogador = jogador;
 		this.boneco = boneco;
 	}
-	public Rodada(long id, Palavra[] palavra, Jogador jogador, Boneco boneco) {
-		super(id);
-		this.palavra = palavra;
-		this.jogador = jogador;
-		this.boneco = boneco; 
->>>>>>> be503b8bb78eb49654da9540503daf5804646dd3
-	}
 	
 	public int getNumPalavras() {
 		return itens.length;
 	}
 	
 	public Palavra[] getPalavras() {
-<<<<<<< HEAD
-		int qtd = this.itens.length;
-		Palavra[] palavras = new Palavra[qtd];
-		for(int c = 0; c < qtd; c++) {
+		Palavra[] palavras = new Palavra[this.itens.length];
+		for(int c = 0; c < palavras.length; c++) {
 			palavras[c] = this.itens[c].getPalavra();
 		}
 		return palavras;
@@ -58,65 +50,12 @@ public class Rodada extends ObjetoDominioImpl {
 	
 	public Tema getTema() {
 		return this.itens[0].getPalavra().getTema();
-=======
-		return this.palavra;
-	}
-	
-	public Tema getTema() {
-		return this.palavra[0].getTema();
->>>>>>> be503b8bb78eb49654da9540503daf5804646dd3
 	}
 	
 	public Jogador getJogador() {
 		return this.jogador;
 	}
-	
-	public int getQtdeAcertos() {
-		int acertos = 0;
-		
-		for(int i=0; i < this.itens.length; i++) {
-			acertos += this.itens[i].qtdeLetrasEncobertas();
-		}
-		
-		return acertos;
-	}
-	
-	public int getQtdeErros() {
-		return this.erradas.length;
-	}
-	
-	public int getQtdeTentativaRestantes() {
-		
-	}
-	
-	public boolean arriscou() {
-		this.itens[0].arriscou();
-	}
-	
-	public boolean descobriu() {
-		
-	}
-	
-	public boolean encerrou() {
-		
-	}
-	
-	public int calcularPontos() {
-		
-	}
-	
-	public Letra[] getErradas() {
-		
-	}
 
-	public Letra[] getCertas() {
-		
-	}
-
-	public Letra[] getTentativas() {
-		
-	}
-	
 	public void exibirPalavras() {
 		for(int c = 0; c < this.itens.length; c++) {
 			this.itens[c].getPalavra().exibir();
@@ -135,12 +74,97 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public void arriscar(String[] palavras) {
+		if (!this.encerrou()) {
+			for(int i = 0; i < this.itens.length; i++) {
+				this.itens[i].arriscar(palavras[i]);
+			}
+		}
+		if(this.encerrou()) {
+			this.jogador.setPontuacao(this.calcularPontos());
+		}
+	}
+		
+	public int getQtdeAcertos() {
+		int acertos = 0;
+		
+		for(int i = 0; i < this.itens.length; i++) {
+			acertos += this.itens[i].qtdeLetrasEncobertas();
+		}
+		
+		return acertos;
+	}
+	
+	public int getQtdeErros() {
+		return this.erradas.length;
+	}
+	
+	public int getQtdeTentativaRestantes() {
+		return this.maxErros - this.getQtdeErros();
+	}
+	
+	public boolean arriscou() {
+		return this.itens[0].arriscou();
+	}
+	
+	public boolean descobriu() {
+		for(Item i : this.itens) {
+			if (!i.descobriu()) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public boolean encerrou() {
+		return this.descobriu() || this.arriscou() || this.erradas.length == this.maxErros;
+	}
+	
+	public int calcularPontos() {
+		if(!this.descobriu()) {
+			return 0;
+		}
+		
+		int qtdLetrasEncobertas = 0;
+		for(Item i : this.itens) {
+			qtdLetrasEncobertas += i.qtdeLetrasEncobertas();
+		}
+		return this.pontosQuandoDescobreTodasAsPalavras + (this.pontosPorLetraEncoberta * qtdLetrasEncobertas);
 		
 	}
 	
+	public Letra[] getErradas() {
+		return this.erradas;
+	}
+
+	public Letra[] getCertas() {
+		HashSet<Letra> certas = new HashSet<Letra>();
+		for(Item i: this.itens) {
+			for(Letra l : i.getLetrasDescobertas()) {
+				certas.add(l);
+			}
+		}
+		return (Letra[])certas.toArray();
+	}
+
+	public Letra[] getTentativas() {
+		HashSet<Letra> tentativas = new HashSet<Letra>();
+		for(Letra l : this.getCertas()) {
+			tentativas.add(l);
+		}
+		for(Letra l : this.getErradas()) {
+			tentativas.add(l);
+		}
+		return (Letra[])tentativas.toArray();
+	}
+	
 	public void tentar(char codigo) {
-		for(int c = 0; c < this.itens.length; c++) {
-			this.itens[c].tentar(codigo);
+		if (!this.encerrou()) {
+			for(int c = 0; c < this.itens.length; c++) {
+				this.itens[c].tentar(codigo);
+			}
+		}
+		if(this.encerrou()) {
+			this.jogador.setPontuacao(this.calcularPontos());
 		}
 	}
 
