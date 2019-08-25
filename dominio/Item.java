@@ -16,6 +16,10 @@ public class Item extends ObjetoDominioImpl {
 	public Item(int id, Palavra palavra) {
 		super(id);
 		this.palavra = palavra;
+		for(int c = 0; c < palavra.getTamanho(); c++) {
+			this.posicoesDescobertas[c] = false;
+		}
+
 		
 	}
 
@@ -65,12 +69,29 @@ public class Item extends ObjetoDominioImpl {
 		return this.getLetrasEncobertas().length;
 	}
 	
-	public Letra[] getLetrasEncobertas() {
+	public Letra[] getLetrasEncobertas(){
+		int qtd = 0;
+		for(int c = 0; c < this.palavra.getTamanho(); c++) {
+			if(this.posicoesDescobertas[c]) {
+				qtd++;
+			}
+		}
+		
+		Letra[] letras = new Letra[qtd];
+		int l = 0;
+		for(int c = 0; c < this.palavra.getTamanho(); c++) {
+			if(this.posicoesDescobertas[c]) {
+				letras[l] = this.palavra.getLetra(c);
+				l++;
+			}
+		}	
+		
+		return letras;
 		
 	}
 	
 	public Letra[] getLetrasDescobertas() {
-		
+		return new Letra[3];
 	}
 
 }
