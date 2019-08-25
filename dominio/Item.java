@@ -1,28 +1,29 @@
 package dominio;
 
+import java.util.HashSet;
+
 public class Item extends ObjetoDominioImpl {
 
-	private int[] posicoesDescobertas;
+	private boolean[] posicoesDescobertas;
 	private String palavraArriscada = null;
 	private Palavra palavra;
 	
-	public Item(int id, Palavra palavra, int[] posicoesDescobertas, String palavraArriscada) {
+	public Item(int id, Palavra palavra) {
+		super(id);
+		this.palavra = palavra;
+		this.posicoesDescobertas = new boolean[this.palavra.getTamanho()];
+		for(int p = 0; p < this.palavra.getTamanho(); p++) {
+			this.posicoesDescobertas[p] = false;
+		}
+	}
+	
+	public Item(int id, Palavra palavra, boolean[] posicoesDescobertas, String palavraArriscada) {
 		super(id);
 		this.palavra = palavra;
 		this.posicoesDescobertas = posicoesDescobertas;
 		this.palavraArriscada = palavraArriscada;
 	}
 	
-	public Item(int id, Palavra palavra) {
-		super(id);
-		this.palavra = palavra;
-		for(int c = 0; c < palavra.getTamanho(); c++) {
-			this.posicoesDescobertas[c] = false;
-		}
-
-		
-	}
-
 	public Palavra getPalavra() {
 		return this.palavra;
 	}
@@ -32,16 +33,13 @@ public class Item extends ObjetoDominioImpl {
 	}
 	
 	void arriscar(String palavra) {
-		if(this.palavraArriscada.isEmpty()) { 
+		if(!this.arriscou()) { 
 			this.palavraArriscada = palavra;
 		}
 	}
-	
-	boolean tentar(char codigo) {
-		if (this.palavra.tentar(codigo).length > 0) {
-			return true;
-		}
-		return false;
+
+	public boolean arriscou() {
+		return this.palavraArriscada != null;
 	}
 	
 	public void exibir() {
@@ -52,11 +50,6 @@ public class Item extends ObjetoDominioImpl {
 		return this.palavra.comparar(this.palavraArriscada);
 	}
 
-	
-	public boolean arriscou() {
-		return this.palavraArriscada == null;
-	}
-	
 	public boolean descobriu() {
 		return this.acertou() || this.getLetrasEncobertas().length == 0;
 	}
@@ -65,33 +58,42 @@ public class Item extends ObjetoDominioImpl {
 		return valorPorLetraEncoberta * this.qtdeLetrasEncobertas();
 	}
 	
-	public int qtdeLetrasEncobertas() {
-		return this.getLetrasEncobertas().length;
+	boolean tentar(char codigo) {
+		int[] acertos = this.palavra.tentar(codigo);
+		for(int c = 0; c < acertos.length; c++) {
+			this.posicoesDescobertas[acertos[c]] = true;
+		}
+		return acertos.length > 0;
 	}
-	
-	public Letra[] getLetrasEncobertas(){
+
+	public int qtdeLetrasEncobertas() {
 		int qtd = 0;
-		for(int c = 0; c < this.palavra.getTamanho(); c++) {
-			if(this.posicoesDescobertas[c]) {
+		for(int c = 0; c < this.posicoesDescobertas.length; c++) {
+			if (!this.posicoesDescobertas[c]) {
 				qtd++;
 			}
 		}
-		
-		Letra[] letras = new Letra[qtd];
-		int l = 0;
+		return qtd;
+	}
+	
+	public Letra[] getLetrasEncobertas(){
+		HashSet<Letra> letrasEncobertas = new HashSet<Letra>();
 		for(int c = 0; c < this.palavra.getTamanho(); c++) {
-			if(this.posicoesDescobertas[c]) {
-				letras[l] = this.palavra.getLetra(c);
-				l++;
+			if(!this.posicoesDescobertas[c]) {
+				letrasEncobertas.add(this.palavra.getLetra(c));
 			}
 		}	
-		
-		return letras;
-		
+		return (Letra[])letrasEncobertas.toArray();
 	}
 	
 	public Letra[] getLetrasDescobertas() {
-		return new Letra[3];
+		HashSet<Letra> letrasDescobertas = new HashSet<Letra>();
+		for(int c = 0; c < this.palavra.getTamanho(); c++) {
+			if(this.posicoesDescobertas[c]) {
+				letrasDescobertas.add(this.palavra.getLetra(c));
+			}
+		}	
+		return (Letra[])letrasDescobertas.toArray();
 	}
 
 }
