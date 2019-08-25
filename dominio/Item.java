@@ -2,14 +2,14 @@ package dominio;
 
 public class Item extends ObjetoDominioImpl {
 
-	private boolean[] posicoesDescobertas;
+	private int[] posicoesDescobertas;
 	private String palavraArriscada = null;
 	private Palavra palavra;
 	
 	public Item(int id, Palavra palavra, int[] posicoesDescobertas, String palavraArriscada) {
 		super(id);
 		this.palavra = palavra;
-		//this.posicoesDescobertas = posicoesDescobertas;
+		this.posicoesDescobertas = posicoesDescobertas;
 		this.palavraArriscada = palavraArriscada;
 	}
 	

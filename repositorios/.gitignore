@@ -1,0 +1,17 @@
+/BDRJogadorRepository.class
+/BDRPalavraRepository.class
+/BDRRepositoryFactory.class
+/BDRRodadaRepository.class
+/BDRTemaRepository.class
+/DomainRepository.class
+/JogadorRepository.class
+/MemoriaJogadorRepository.class
+/MemoriaPalavraRepository.class
+/MemoriaRepositoryFactory.class
+/MemoriaRodadaRepository.class
+/MemoriaTemaRepository.class
+/PalavraRepository.class
+/RepositoryException.class
+/RepositoryFactory.class
+/RodadaRepository.class
+/TemaRepository.class
