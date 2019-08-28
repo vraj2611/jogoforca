@@ -10,7 +10,6 @@ public class Rodada extends ObjetoDominioImpl {
 	private int pontosPorLetraEncoberta = 15;
 	
 	private Jogador jogador;
-	private Boneco boneco;
 	private Item[] itens;
 	private Letra[] erradas;
 	
@@ -24,10 +23,13 @@ public class Rodada extends ObjetoDominioImpl {
 		return bonecoFactory;
 	}
 	
-	public Rodada(long id, Palavra[] palavras, Jogador jogador, Boneco boneco) {
+	public static Rodada criar(long id, Palavra[] palavras, Jogador jogador) {
+		return new Rodada(id, palavras, jogador);
+	}
+	
+	private Rodada(long id, Palavra[] palavras, Jogador jogador) {
 		super(id);
 		this.jogador = jogador;
-		this.boneco = boneco;
 		int qtdPalavras = palavras.length;
 		if (qtdPalavras > maxPalavras) {
 			qtdPalavras = maxPalavras;
@@ -43,7 +45,6 @@ public class Rodada extends ObjetoDominioImpl {
 		this.itens = itens;
 		this.erradas = erradas;
 		this.jogador = jogador;
-		this.boneco = boneco;
 	}
 	
 	public int getNumPalavras() {
@@ -74,7 +75,7 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public void exibirBoneco() {
-		this.boneco.exibir(this.getQtdeErros());
+		bonecoFactory.getBoneco().exibir(this.getQtdeErros());
 	}
 	
 	public void exibirItens() {

@@ -6,32 +6,34 @@ import dominio.Jogador;
 import dominio.Palavra;
 import dominio.Rodada;
 import dominio.Tema;
+import repositorios.PalavraRepository;
 import repositorios.RodadaRepository;
+import repositorios.TemaRepository;
 
 public class RodadaSorteioFactory extends RodadaFactoryImpl implements RodadaFactory {
 
 	private static RodadaSorteioFactory soleInstance;
 	
-	private RodadaSorteioFactory(){
-		super(repository);
+	private RodadaSorteioFactory(RodadaRepository repository, PalavraRepository palavraRepository, TemaRepository temaRepository){
+		super(repository, palavraRepository, temaRepository);
 	}
 	
 	public static RodadaSorteioFactory getSoleInstance() {
-		return null;
+		return soleInstance;
 	}
 	
-	public static void createSoleInstance(RodadaRepository repository){
-		soleInstance = new RodadaSorteioFactory(repository);
+	public static void createSoleInstance(RodadaRepository repository, PalavraRepository palavraRepository, TemaRepository temaRepository){
+		soleInstance = new RodadaSorteioFactory(repository, palavraRepository, temaRepository);
 	}
 
 	@Override
 	public Rodada getRodada(Jogador jogador) {
 		Random random = new Random();
 		
-		Tema[] temas = temaRepository.getTodos();
+		Tema[] temas = this.getTemaRepository().getTodos();
 		Tema tema = temas[random.nextInt(temas.length) - 1];
 		
-		Palavra[] palavrasDoTema = palavraRepository.getPorTema(tema);
+		Palavra[] palavrasDoTema = this.getPalavraRepository().getPorTema(tema);
 		
 		int quantPalavras = random.nextInt(2) + 1;
 		Palavra[] palavras = new Palavra[quantPalavras];
@@ -43,8 +45,8 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl implements RodadaFac
 				palavras[p] = escolhida;
 			}
 		}
-		
-		return new Rodada(0, palavras, jogador, boneco);
+		return Rodada.criar(this.getProximoId() , palavras, jogador);
+	
 	}
 
 	

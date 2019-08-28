@@ -3,8 +3,6 @@ package fabricas;
 import dominio.Palavra;
 import dominio.Tema;
 import repositorios.PalavraRepository;
-import repositorios.Repository;
-
 
 public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory {
 
@@ -23,8 +21,8 @@ public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory 
 	}
 	
 	@Override
-	public Palavra getPalavra(String nome, Tema tema) {
-		return null;
+	public Palavra getPalavra(String palavra, Tema tema) {
+		return this.getPalavraRepository().getPalavra(palavra);
 	}
 
 	private PalavraRepository getPalavraRepository() {

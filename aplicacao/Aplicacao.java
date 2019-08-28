@@ -16,6 +16,7 @@ import fabricas.TemaFactoryImpl;
 import repositorios.BDRRepositoryFactory;
 import repositorios.MemoriaRepositoryFactory;
 import repositorios.RepositoryFactory;
+import servicos.JogoForcaService;
 
 public class Aplicacao {
 	
@@ -122,7 +123,11 @@ public class Aplicacao {
 		TemaFactoryImpl.createSoleInstance(repo.getTemaRepository());
 		PalavraFactoryImpl.createSoleInstance(repo.getPalavraRepository());
 		JogadorFactoryImpl.createSoleInstance(repo.getJogadorRepository());
-		RodadaSorteioFactory.createSoleInstance(repo.getRodadaRepository());
+		RodadaSorteioFactory.createSoleInstance(
+				repo.getRodadaRepository(), repo.getPalavraRepository(), repo.getTemaRepository());
+		
+		JogoForcaService.createSoleInstance(
+			repo.getPalavraRepository(), repo.getRodadaRepository(), this.getRodadaFactory());
 		
 		ElementoGraficoFactory egf = this.getElementoGraficoFactory();
 		Palavra.setLetraFactory(egf);
