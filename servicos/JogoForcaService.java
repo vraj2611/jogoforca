@@ -7,6 +7,7 @@ import dominio.Jogador;
 import dominio.Palavra;
 import dominio.Rodada;
 import dominio.Tema;
+import fabricas.RodadaFactory;
 import repositorios.PalavraRepository;
 import repositorios.RodadaRepository;
 import repositorios.TemaRepository;
@@ -14,15 +15,24 @@ import repositorios.RepositoryException;
 
 public class JogoForcaService {
 
-	private JogoForcaService soleInstance;
+	private static JogoForcaService soleInstance;
+
+	private static PalavraRepository palavraRepository;
+	private static RodadaRepository rodadaRepository;
+	private static RodadaFactory rodadaFactory;
 	
-	private JogoForcaService(){}
+	private JogoForcaService(PalavraRepository palavraRepository, RodadaRepository rodadaRepository, RodadaFactory rodadaFactory){
+		JogoForcaService.palavraRepository = palavraRepository;
+		JogoForcaService.rodadaFactory = rodadaFactory;
+		JogoForcaService.rodadaRepository = rodadaRepository;
+	}
 	
-	public JogoForcaService getSoleInstance() {
-		if (soleInstance == null) {
-			soleInstance = new JogoForcaService();
-		}
+	public static JogoForcaService getSoleInstance() {
 		return soleInstance;
+	}
+	
+	public static void createSoleInstance(PalavraRepository palavraRepository, RodadaRepository rodadaRepository, RodadaFactory rodadaFactory){
+		soleInstance = new JogoForcaService(palavraRepository, rodadaRepository, rodadaFactory);
 	}
 	
 	public Rodada novaRodada(Jogador jogador, Boneco boneco, TemaRepository temaRepository, PalavraRepository palavraRepository) {

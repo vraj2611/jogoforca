@@ -3,7 +3,7 @@ package repositorios;
 import dominio.Palavra;
 import dominio.Tema;
 
-public interface PalavraRepository extends DomainRepository {
+public interface PalavraRepository extends Repository {
 
 	public Palavra getPalavra(String palavra);
 	public Palavra[] getTodas();

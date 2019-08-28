@@ -14,6 +14,16 @@ public class Rodada extends ObjetoDominioImpl {
 	private Item[] itens;
 	private Letra[] erradas;
 	
+	private static BonecoFactory bonecoFactory;
+	
+	public static void setBonecoFactory(BonecoFactory factory) {
+		bonecoFactory = factory;
+	}
+	
+	public static BonecoFactory getBonecoFactory() {
+		return bonecoFactory;
+	}
+	
 	public Rodada(long id, Palavra[] palavras, Jogador jogador, Boneco boneco) {
 		super(id);
 		this.jogador = jogador;

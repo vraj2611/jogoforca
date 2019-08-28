@@ -1,6 +1,7 @@
 package fabricas;
 
 import dominio.Boneco;
+import dominio.BonecoFactory;
 import dominio.BonecoTexto;
 
 public class BonecoTextoFactory implements BonecoFactory {
@@ -18,7 +19,7 @@ public class BonecoTextoFactory implements BonecoFactory {
 
 	@Override
 	public Boneco getBoneco() {
-		return new BonecoTexto();
+		return null;
 	}
 
 	

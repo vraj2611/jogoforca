@@ -1,6 +1,6 @@
 package repositorios;
 
-public interface DomainRepository {
+public interface Repository {
 
 	public long getProximoId();
 }

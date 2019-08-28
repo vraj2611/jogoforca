@@ -3,6 +3,7 @@ package fabricas;
 import java.util.HashMap;
 
 import dominio.Letra;
+import dominio.LetraFactory;
 
 public abstract class LetraFactoryImpl implements LetraFactory {
 

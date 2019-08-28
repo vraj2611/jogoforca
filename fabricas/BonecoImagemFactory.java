@@ -1,6 +1,7 @@
 package fabricas;
 
 import dominio.Boneco;
+import dominio.BonecoFactory;
 import dominio.BonecoImagem;
 
 public class BonecoImagemFactory implements BonecoFactory {

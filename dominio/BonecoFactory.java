@@ -1,6 +1,4 @@
-package fabricas;
-
-import dominio.Boneco;
+package dominio;
 
 public interface BonecoFactory {
 	public Boneco getBoneco();

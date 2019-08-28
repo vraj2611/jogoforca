@@ -2,7 +2,7 @@ package repositorios;
 
 import dominio.Tema;
 
-public interface TemaRepository extends DomainRepository {
+public interface TemaRepository extends Repository {
 
 	public void remover(Tema tema) throws RepositoryException;
 	public void atualizar(Tema tema) throws RepositoryException;

@@ -1,21 +1,25 @@
 package dominio;
 
 import java.util.ArrayList;
-import fabricas.LetraFactory;
 
 public class Palavra extends ObjetoDominioImpl {
+	
+	private static LetraFactory letraFactory;
 	
 	private Tema tema;
 	private Letra encoberta;
 	private Letra[] letras;
 	
+	public static void setLetraFactory(LetraFactory factory) {
+		letraFactory = factory;
+	}
 	
-	public Palavra(long id, String palavra, Tema tema, LetraFactory factory) {
+	public Palavra(long id, String palavra, Tema tema) {
 		super(id);
 		this.tema = tema;
-		this.encoberta = factory.getLetraEncoberta();
+		this.encoberta = letraFactory.getLetraEncoberta();
 		for(int c = 0; c < palavra.length(); c++) {
-			this.letras[c] = factory.getLetra(palavra.charAt(c));
+			this.letras[c] = letraFactory.getLetra(palavra.charAt(c));
 		}
 	}
 	

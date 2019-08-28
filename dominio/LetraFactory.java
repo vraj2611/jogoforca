@@ -1,6 +1,4 @@
-package fabricas;
-
-import dominio.Letra;
+package dominio;
 
 public interface LetraFactory {
 

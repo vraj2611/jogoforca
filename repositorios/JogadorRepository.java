@@ -2,7 +2,7 @@ package repositorios;
 
 import dominio.Jogador;
 
-public interface JogadorRepository extends DomainRepository {
+public interface JogadorRepository extends Repository {
 
 	public void remover(Jogador jogador) throws RepositoryException;
 	public void atualizar(Jogador jogador) throws RepositoryException;
