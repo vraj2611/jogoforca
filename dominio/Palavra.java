@@ -14,6 +14,10 @@ public class Palavra extends ObjetoDominioImpl {
 		letraFactory = factory;
 	}
 	
+	public static LetraFactory getLetraFactory() {
+		return letraFactory;
+	}
+	
 	private Palavra(long id, String palavra, Tema tema) {
 		super(id);
 		this.tema = tema;

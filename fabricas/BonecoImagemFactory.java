@@ -2,7 +2,6 @@ package fabricas;
 
 import dominio.Boneco;
 import dominio.BonecoFactory;
-import dominio.BonecoImagem;
 
 public class BonecoImagemFactory implements BonecoFactory {
 
@@ -19,7 +18,7 @@ public class BonecoImagemFactory implements BonecoFactory {
 	
 	@Override
 	public Boneco getBoneco() {
-		
+		return soleInstance.getBoneco();
 	}
 
 	

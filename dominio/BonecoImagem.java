@@ -23,13 +23,13 @@ public class BonecoImagem implements Boneco {
 		} else if (partes == 6) {
 			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO";
 		} else if (partes == 7) {
-			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRAÇO ESQ";
+			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRACO ESQ";
 		} else if (partes == 8) {
-			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRAÇO ESQ, BRAÇO DIR";
+			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRACO ESQ, BRACO DIR";
 		} else if (partes == 9) {
-			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRAÇO ESQ, BRAÇO DIR, PERNA ESQ";
+			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRACO ESQ, BRACO DIR, PERNA ESQ";
 		} else if (partes == 10) {
-			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRAÇO ESQ, BRAÇO DIR, PERNA ESQ, PERNA DIR";
+			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRACO ESQ, BRACO DIR, PERNA ESQ, PERNA DIR";
 		}
 		
 		((PrintStream) contexto).println(saida);
