@@ -27,6 +27,10 @@ public class Rodada extends ObjetoDominioImpl {
 		return new Rodada(id, palavras, jogador);
 	}
 	
+	public static Rodada reconstituir(long id, Item[] itens, Letra[] erradas, Jogador jogador) {
+		return new Rodada(id, itens, erradas, jogador);
+	}
+	
 	private Rodada(long id, Palavra[] palavras, Jogador jogador) {
 		super(id);
 		this.jogador = jogador;
@@ -36,11 +40,11 @@ public class Rodada extends ObjetoDominioImpl {
 		}
 		this.itens = new Item[qtdPalavras];
 		for(int c = 0; c < qtdPalavras; c++) {
-			this.itens[c] = new Item(c, palavras[c]);
+			this.itens[c] = this.itens[c].criar(id, palavras[c]);
 		}
 	}
 	
-	public Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador, Boneco boneco) {
+	private Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador) {
 		super(id);
 		this.itens = itens;
 		this.erradas = erradas;

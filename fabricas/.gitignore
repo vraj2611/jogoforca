@@ -8,3 +8,13 @@
 /LetraFactoryImpl.class
 /LetraImagemFactory.class
 /LetraTextoFactory.class
+/EntityFactory.class
+/JogadorFactory.class
+/JogadorFactoryImpl.class
+/PalavraFactory.class
+/PalavraFactoryImpl.class
+/RodadaFactory.class
+/RodadaFactoryImpl.class
+/RodadaSorteioFactory.class
+/TemaFactory.class
+/TemaFactoryImpl.class

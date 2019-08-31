@@ -14,13 +14,21 @@ public class Palavra extends ObjetoDominioImpl {
 		letraFactory = factory;
 	}
 	
-	public Palavra(long id, String palavra, Tema tema) {
+	private Palavra(long id, String palavra, Tema tema) {
 		super(id);
 		this.tema = tema;
 		this.encoberta = letraFactory.getLetraEncoberta();
 		for(int c = 0; c < palavra.length(); c++) {
 			this.letras[c] = letraFactory.getLetra(palavra.charAt(c));
 		}
+	}
+	
+	public static Palavra criar(long id, String palavra, Tema tema) {
+		return new Palavra(id, palavra, tema);
+	}
+	
+	public static Palavra reconstituir(long id, String palavra, Tema tema) {
+		return new Palavra(id, palavra, tema);
 	}
 	
 	public int getTamanho() {
