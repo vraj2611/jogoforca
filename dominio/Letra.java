@@ -16,7 +16,7 @@ public abstract class Letra {
 		return String.valueOf(this.codigo);
 	}
 
-	public abstract void exibir();
+	public abstract void exibir(Object contexto);
 	
 	@Override
 	public int hashCode() {

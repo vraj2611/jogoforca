@@ -6,7 +6,8 @@ public class LetraImagem extends Letra {
 		super(codigo);
 	}
 
-	public void exibir() {
+	@Override
+	public void exibir(Object contexto) {
 		
 	}
 }

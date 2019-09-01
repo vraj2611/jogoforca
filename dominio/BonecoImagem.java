@@ -4,8 +4,17 @@ import java.io.PrintStream;
 
 public class BonecoImagem implements Boneco {
 
+	private static Boneco soleInstance;
+	
 	private BonecoImagem() {}
 
+	public static Boneco getSoleInstance() {
+		if (soleInstance == null) {
+			soleInstance = new BonecoImagem();
+		}
+		return soleInstance;
+	}
+	
 	@Override
 	public void exibir(Object contexto, int partes) {
 		String saida = new String();
@@ -33,12 +42,6 @@ public class BonecoImagem implements Boneco {
 		}
 		
 		((PrintStream) contexto).println(saida);
-	}
-	
-	
-	public BonecoImagem getSoleInstance() {
-		BonecoImagem bonecoImagem = new BonecoImagem();
-		return bonecoImagem;
 	}
 	
 }

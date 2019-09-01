@@ -4,7 +4,16 @@ import java.io.PrintStream;
 
 public class BonecoTexto implements Boneco {
 
+	private static Boneco soleInstance;
+	
 	private BonecoTexto() {}
+
+	public static Boneco getSoleInstance() {
+		if (soleInstance == null) {
+			soleInstance = new BonecoTexto();
+		}
+		return soleInstance;
+	}
 	
 	@Override
 	public void exibir(Object contexto, int partes) {
@@ -33,11 +42,6 @@ public class BonecoTexto implements Boneco {
 		}
 		
 		((PrintStream) contexto).println(saida);
-	}
-	
-	public BonecoTexto getSoleInstance() {
-		BonecoTexto bonecoTexto = new BonecoTexto();
-		return bonecoTexto;
 	}
 
 }
