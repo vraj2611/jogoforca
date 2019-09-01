@@ -6,7 +6,8 @@ public class LetraTexto extends Letra {
 		super(codigo);
 	}
 
-	public void exibir() {
-		super.toString();
+	@Override
+	public void exibir(Object contexto) {
+		this.toString();
 	}
 }

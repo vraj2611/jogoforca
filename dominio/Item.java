@@ -8,7 +8,7 @@ public class Item extends ObjetoDominioImpl {
 	private String palavraArriscada = null;
 	private Palavra palavra;
 	
-	public Item(int id, Palavra palavra) {
+	private Item(long id, Palavra palavra) {
 		super(id);
 		this.palavra = palavra;
 		this.posicoesDescobertas = new boolean[this.palavra.getTamanho()];
@@ -17,12 +17,20 @@ public class Item extends ObjetoDominioImpl {
 		}
 	}
 	
-	public Item(int id, Palavra palavra, boolean[] posicoesDescobertas, String palavraArriscada) {
+    private Item(long id, Palavra palavra, boolean[] posicoesDescobertas, String palavraArriscada) {
 		super(id);
 		this.palavra = palavra;
 		this.posicoesDescobertas = posicoesDescobertas;
 		this.palavraArriscada = palavraArriscada;
 	}
+    
+    static Item criar(long id, Palavra palavra) {
+    	return new Item(id, palavra);
+    }
+    
+    public static Item reconstituir(long id, Palavra palavra, boolean[] posicoesDescobertas, String palavraArriscada) {
+    	return new Item(id, palavra, posicoesDescobertas, palavraArriscada);
+    }
 	
 	public Palavra getPalavra() {
 		return this.palavra;

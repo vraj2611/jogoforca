@@ -1,19 +1,53 @@
 package dominio;
 
 import java.util.HashSet;
+import java.io.PrintStream;
 
 public class Rodada extends ObjetoDominioImpl {
-
-	private int maxPalavras = 3;
-	private int maxErros = 10;
-	private int pontosQuandoDescobreTodasAsPalavras = 100; 
-	private int pontosPorLetraEncoberta = 15;
+	
+	private static int maxPalavras;
+	private static int maxErros;
+	private static int pontosQuandoDescobreTodasAsPalavras; 
+	private static int pontosPorLetraEncoberta;
 	
 	private Jogador jogador;
 	private Item[] itens;
 	private Letra[] erradas;
+	private PrintStream printStream;
 	
 	private static BonecoFactory bonecoFactory;
+	
+	public static int getMaxPalavras() {
+		return maxPalavras;
+	}
+	
+	public static void setMaxPalavras(int max) {
+		maxErros = max;
+	}
+	
+	public static int getMaxErros() {
+		return maxErros;
+	}
+	
+	public static void setMaxErros(int max) {
+		maxErros = max;
+	}
+	
+	public static int pontosQuandoDescobreTodasAsPalavras() {
+		return pontosQuandoDescobreTodasAsPalavras;
+	}
+	
+	public static void pontosQuandoDescobreTodasAsPalavras(int pontos) {
+		pontosQuandoDescobreTodasAsPalavras = pontos;
+	}
+	
+	public static int pontosPorLetraEncoberta() {
+		return pontosPorLetraEncoberta;
+	}
+	
+	public static void pontosPorLetraEncoberta(int pontos) {
+		pontosPorLetraEncoberta = pontos;
+	}
 	
 	public static void setBonecoFactory(BonecoFactory factory) {
 		bonecoFactory = factory;
@@ -27,6 +61,10 @@ public class Rodada extends ObjetoDominioImpl {
 		return new Rodada(id, palavras, jogador);
 	}
 	
+	public static Rodada reconstituir(long id, Item[] itens, Letra[] erradas, Jogador jogador) {
+		return new Rodada(id, itens, erradas, jogador);
+	}
+	
 	private Rodada(long id, Palavra[] palavras, Jogador jogador) {
 		super(id);
 		this.jogador = jogador;
@@ -36,11 +74,11 @@ public class Rodada extends ObjetoDominioImpl {
 		}
 		this.itens = new Item[qtdPalavras];
 		for(int c = 0; c < qtdPalavras; c++) {
-			this.itens[c] = new Item(c, palavras[c]);
+			this.itens[c] = Item.criar(id, palavras[c]);
 		}
 	}
 	
-	public Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador, Boneco boneco) {
+	private Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador) {
 		super(id);
 		this.itens = itens;
 		this.erradas = erradas;
@@ -75,7 +113,7 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public void exibirBoneco() {
-		bonecoFactory.getBoneco().exibir(this.getQtdeErros());
+		bonecoFactory.getBoneco().exibir(this.printStream, this.getQtdeErros());
 	}
 	
 	public void exibirItens() {
@@ -110,7 +148,7 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public int getQtdeTentativaRestantes() {
-		return this.maxErros - this.getQtdeErros();
+		return maxErros - this.getQtdeErros();
 	}
 	
 	public boolean arriscou() {
@@ -127,7 +165,7 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public boolean encerrou() {
-		return this.descobriu() || this.arriscou() || this.erradas.length == this.maxErros;
+		return this.descobriu() || this.arriscou() || this.erradas.length == maxErros;
 	}
 	
 	public int calcularPontos() {
@@ -139,7 +177,7 @@ public class Rodada extends ObjetoDominioImpl {
 		for(Item i : this.itens) {
 			qtdLetrasEncobertas += i.qtdeLetrasEncobertas();
 		}
-		return this.pontosQuandoDescobreTodasAsPalavras + (this.pontosPorLetraEncoberta * qtdLetrasEncobertas);
+		return pontosQuandoDescobreTodasAsPalavras + (pontosPorLetraEncoberta * qtdLetrasEncobertas);
 		
 	}
 	

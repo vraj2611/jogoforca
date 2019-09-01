@@ -17,9 +17,6 @@ public class LetraTextoFactory extends LetraFactoryImpl {
 	}
 		
 	protected Letra criarLetra(char codigo) {
-		if(!Character.isDefined(codigo)) {
-			codigo = new Character('*');
-		}
 		return new LetraTexto(codigo);
 	}
 

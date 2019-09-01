@@ -1,5 +1,6 @@
 package repositorios;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -10,7 +11,7 @@ import dominio.Tema;
 public class MemoriaPalavraRepository implements PalavraRepository {
 
 	private static MemoriaPalavraRepository soleInstance;
-	private HashMap<Long, Palavra> pool;
+	private HashMap<Long, Palavra> pool = new HashMap<Long, Palavra>();
 	
 	private MemoriaPalavraRepository() {}
 	
@@ -81,7 +82,7 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 
 	@Override
 	public Palavra[] getPorTema(Tema tema) {
-		HashSet<Palavra> palavrasDoTema = new HashSet<Palavra>();
+		ArrayList<Palavra> palavrasDoTema = new ArrayList<Palavra>();
 		Iterator<Palavra> palavras = this.pool.values().iterator();
 		while(palavras.hasNext()) {
 			Palavra palavraObj = palavras.next();
@@ -89,7 +90,11 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 				palavrasDoTema.add(palavraObj);
 			}
 		}
-		return (Palavra[])palavrasDoTema.toArray(); 
+		Palavra[] resultado = new Palavra[palavrasDoTema.size()];
+		for (int p = 0; p < palavrasDoTema.size() ; p++) {
+			resultado[p] = palavrasDoTema.get(p);
+		}
+		return resultado; 
 	}
 
 }

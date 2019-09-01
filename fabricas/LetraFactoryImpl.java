@@ -7,7 +7,7 @@ import dominio.LetraFactory;
 
 public abstract class LetraFactoryImpl implements LetraFactory {
 
-	protected HashMap<Character, Letra> pool;
+	protected HashMap<Character, Letra> pool = new HashMap<Character, Letra>();
 	protected Letra encoberta;
 	
 	protected Letra criarLetra(char codigo) {
@@ -22,11 +22,11 @@ public abstract class LetraFactoryImpl implements LetraFactory {
 		return this.pool.get(codigo);
 	}
 	
-	@SuppressWarnings("null")
 	@Override
 	public final Letra getLetraEncoberta() {
 		if (encoberta == null) {
-			this.encoberta = this.criarLetra((Character) null);
+			char codigo = "*".charAt(0);
+			this.encoberta = this.criarLetra(codigo);
 		}
 		return this.encoberta;
 	}

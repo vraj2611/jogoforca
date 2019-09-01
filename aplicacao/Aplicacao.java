@@ -23,22 +23,36 @@ public class Aplicacao {
 	private final String[] TIPOS_REPOSITORY_FACTORY = {"memoria", "relacional"};
 	private final String[] TIPOS_ELEMENTO_GRAFICO_FACTORY = {"texto", "imagem"};
 	private final String[] TIPOS_RODADA_FACTORY = {"sorteio"};
-	
+	private static Aplicacao soleInstance;
 	private String tipoRepositoryFactory = this.TIPOS_REPOSITORY_FACTORY[0];
 	private String tipoElementoGraficoFactory = this.TIPOS_ELEMENTO_GRAFICO_FACTORY[0];
 	private String tipoRodadaFactory = this.TIPOS_RODADA_FACTORY[0];
-	
-	private static Aplicacao soleInstance;
-	
-	private Aplicacao() {}
 	
 	public static Aplicacao getSoleInstance() {
 		if (soleInstance == null) {
 			soleInstance = new Aplicacao();
 		}
+		Aplicacao.soleInstance.setup();
 		return soleInstance;
 	}
 	
+	private Aplicacao() {}
+	
+	public void setup() {
+		RepositoryFactory repo = this.getRepositoryFactory();
+		TemaFactoryImpl.createSoleInstance(repo.getTemaRepository());
+		PalavraFactoryImpl.createSoleInstance(repo.getPalavraRepository());
+		JogadorFactoryImpl.createSoleInstance(repo.getJogadorRepository());
+		RodadaSorteioFactory.createSoleInstance(
+				repo.getRodadaRepository(), repo.getPalavraRepository(), repo.getTemaRepository());
+		
+		JogoForcaService.createSoleInstance(
+			repo.getPalavraRepository(), repo.getRodadaRepository(), this.getRodadaFactory());
+		
+		ElementoGraficoFactory egf = this.getElementoGraficoFactory();
+		Palavra.setLetraFactory(egf);
+		Rodada.setBonecoFactory(egf);
+	}
 	public String[] getTiposRepositoryFactory() {
 		return this.TIPOS_REPOSITORY_FACTORY; 
 	}
@@ -118,19 +132,4 @@ public class Aplicacao {
 		return JogadorFactoryImpl.getSoleInstance(); 
 	}
 	
-	public void setup() {
-		RepositoryFactory repo = this.getRepositoryFactory();
-		TemaFactoryImpl.createSoleInstance(repo.getTemaRepository());
-		PalavraFactoryImpl.createSoleInstance(repo.getPalavraRepository());
-		JogadorFactoryImpl.createSoleInstance(repo.getJogadorRepository());
-		RodadaSorteioFactory.createSoleInstance(
-				repo.getRodadaRepository(), repo.getPalavraRepository(), repo.getTemaRepository());
-		
-		JogoForcaService.createSoleInstance(
-			repo.getPalavraRepository(), repo.getRodadaRepository(), this.getRodadaFactory());
-		
-		ElementoGraficoFactory egf = this.getElementoGraficoFactory();
-		Palavra.setLetraFactory(egf);
-		Rodada.setBonecoFactory(egf);
-	}
 }

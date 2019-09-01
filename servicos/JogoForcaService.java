@@ -15,23 +15,19 @@ public class JogoForcaService {
 	private static PalavraRepository palavraRepository;
 	private static RodadaRepository rodadaRepository;
 	private static RodadaFactory rodadaFactory;
+
+	public static void createSoleInstance(PalavraRepository palavraRepository, RodadaRepository rodadaRepository, RodadaFactory rodadaFactory){
+		soleInstance = new JogoForcaService(palavraRepository, rodadaRepository, rodadaFactory);
+	}
+
+	public static JogoForcaService getSoleInstance() {
+		return soleInstance;
+	}
 	
 	private JogoForcaService(PalavraRepository palavraRepository, RodadaRepository rodadaRepository, RodadaFactory rodadaFactory){
 		JogoForcaService.palavraRepository = palavraRepository;
 		JogoForcaService.rodadaFactory = rodadaFactory;
 		JogoForcaService.rodadaRepository = rodadaRepository;
-	}
-	
-	public static JogoForcaService getSoleInstance() {
-		return soleInstance;
-	}
-	
-	public static void createSoleInstance(PalavraRepository palavraRepository, RodadaRepository rodadaRepository, RodadaFactory rodadaFactory){
-		soleInstance = new JogoForcaService(palavraRepository, rodadaRepository, rodadaFactory);
-	}
-	
-	public Rodada novaRodada(Jogador jogador) {
-		return rodadaFactory.getRodada(jogador);
 	}
 	
 	public void novaPalavra(Palavra palavra) throws PalavraRepetidaException, RepositoryException {
@@ -46,7 +42,11 @@ public class JogoForcaService {
 			throw new RepositoryException();
 		}
 	}
-	
+
+	public Rodada novaRodada(Jogador jogador) {
+		return rodadaFactory.getRodada(jogador);
+	}
+		
 	public void salvarRodada(Rodada rodada) throws RepositoryException {		
 		try {
 			rodadaRepository.inserir(rodada);

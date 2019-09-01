@@ -14,13 +14,27 @@ public class Palavra extends ObjetoDominioImpl {
 		letraFactory = factory;
 	}
 	
-	public Palavra(long id, String palavra, Tema tema) {
+	public static LetraFactory getLetraFactory() {
+		return letraFactory;
+	}
+	
+	private Palavra(long id, String palavra, Tema tema) {
 		super(id);
 		this.tema = tema;
 		this.encoberta = letraFactory.getLetraEncoberta();
+		this.encoberta.toString();
+		this.letras = new Letra[palavra.length()];
 		for(int c = 0; c < palavra.length(); c++) {
 			this.letras[c] = letraFactory.getLetra(palavra.charAt(c));
 		}
+	}
+	
+	public static Palavra criar(long id, String palavra, Tema tema) {
+		return new Palavra(id, palavra, tema);
+	}
+	
+	public static Palavra reconstituir(long id, String palavra, Tema tema) {
+		return new Palavra(id, palavra, tema);
 	}
 	
 	public int getTamanho() {
@@ -65,9 +79,9 @@ public class Palavra extends ObjetoDominioImpl {
 		for(int c = 0; c < posicoes.length ; c++) {
 			if (posicoes[c]) {
 				Letra letra = this.letras[c];
-				letra.exibir();
+				letra.exibir(null);
 			} else {
-				this.encoberta.exibir();
+				this.encoberta.exibir(null);
 			}
 			
 		}	
@@ -76,7 +90,7 @@ public class Palavra extends ObjetoDominioImpl {
 	public void exibir() {
 		for(int c = 0; c < this.letras.length ; c++) {
 			Letra letra = this.letras[c];
-			letra.exibir();
+			letra.exibir(null);
 		}
 	}
 	
@@ -86,6 +100,13 @@ public class Palavra extends ObjetoDominioImpl {
 	
 	public Letra[] getLetras() {
 		return this.letras;
+	}
+	
+	public String toString() {
+		char[] palavra = new char[this.letras.length];
+		for (int c = 0 ; c < this.letras.length; c++)
+			palavra[c] = this.letras[c].getCodigo();
+		return String.copyValueOf(palavra);
 	}
 	
 }

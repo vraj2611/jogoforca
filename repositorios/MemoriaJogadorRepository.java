@@ -9,7 +9,7 @@ import dominio.Jogador;
 public class MemoriaJogadorRepository implements JogadorRepository {
 
 	private static MemoriaJogadorRepository soleInstance;
-	private HashMap<Long, Jogador> pool;
+	private HashMap<Long, Jogador> pool= new HashMap<Long, Jogador>();
 	
 	private MemoriaJogadorRepository() {}
 	

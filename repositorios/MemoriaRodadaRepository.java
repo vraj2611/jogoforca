@@ -10,7 +10,7 @@ import dominio.Rodada;
 public class MemoriaRodadaRepository implements RodadaRepository {
 
 	private static MemoriaRodadaRepository soleInstance;
-	private HashMap<Long, Rodada> pool;
+	private HashMap<Long, Rodada> pool = new HashMap<Long, Rodada>();
 	
 	private MemoriaRodadaRepository() {}
 	

@@ -8,7 +8,7 @@ import dominio.Tema;
 public class MemoriaTemaRepository implements TemaRepository {
 
 	private static MemoriaTemaRepository soleInstance;
-	private HashMap<Long, Tema> pool;
+	private HashMap<Long, Tema> pool = new HashMap<Long, Tema>();
 	
 	private MemoriaTemaRepository() {}
 	
@@ -43,7 +43,12 @@ public class MemoriaTemaRepository implements TemaRepository {
 
 	@Override
 	public Tema[] getTodos() {
-		return (Tema[])this.pool.values().toArray();
+		Tema[] temas = new Tema[this.pool.size()];
+		Iterator<Tema> itTema = this.pool.values().iterator();
+		for(int t = 0; t < this.pool.size(); t++) {
+			temas[t] = itTema.next();
+		}
+		return temas; 
 	}
 
 	@Override

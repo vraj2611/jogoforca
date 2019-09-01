@@ -2,6 +2,7 @@ package fabricas;
 
 import dominio.Jogador;
 import repositorios.JogadorRepository;
+import repositorios.RepositoryException;
 
 public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory {
 
@@ -21,7 +22,18 @@ public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory 
 	
 	@Override
 	public Jogador getJogador(String nome) {
-		return this.getJogadorRepository().getPorNome(nome);
+		JogadorRepository repo = this.getJogadorRepository();
+		Jogador jogador = repo.getPorNome(nome);
+		if (jogador == null) {
+			long novo_id = repo.getProximoId();
+			jogador = Jogador.criar(novo_id, nome, 0);
+			try {
+				this.getJogadorRepository().inserir(jogador);
+			} catch (RepositoryException e) {
+				e.printStackTrace();
+			}
+		}
+		return jogador;
 	}
 
 	private JogadorRepository getJogadorRepository() {
