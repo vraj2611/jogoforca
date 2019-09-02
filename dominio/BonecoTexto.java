@@ -1,6 +1,6 @@
 package dominio;
 
-import java.io.PrintStream;
+import gui.ExibidorTexto;
 
 public class BonecoTexto implements Boneco {
 
@@ -41,7 +41,8 @@ public class BonecoTexto implements Boneco {
 			saida = "CABECA, OLHO ESQ, OLHO DIR, NARIZ, BOCA, TRONCO, BRAÇO ESQ, BRAÇO DIR, PERNA ESQ, PERNA DIR";
 		}
 		
-		((PrintStream) contexto).println(saida);
+		ExibidorTexto exib = (ExibidorTexto)contexto;
+		exib.adicionar(saida);
 	}
 
 }

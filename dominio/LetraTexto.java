@@ -1,5 +1,7 @@
 package dominio;
 
+import gui.ExibidorTexto;
+
 public class LetraTexto extends Letra {
 
 	public LetraTexto(char codigo) {
@@ -8,6 +10,7 @@ public class LetraTexto extends Letra {
 
 	@Override
 	public void exibir(Object contexto) {
-		this.toString();
+		ExibidorTexto exib = (ExibidorTexto)contexto;
+		exib.adicionar(this.toString().toUpperCase());
 	}
 }

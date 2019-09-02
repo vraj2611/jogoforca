@@ -1,6 +1,7 @@
 package dominio;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 public class Item extends ObjetoDominioImpl {
 
@@ -42,7 +43,7 @@ public class Item extends ObjetoDominioImpl {
 	
 	void arriscar(String palavra) {
 		if(!this.arriscou()) { 
-			this.palavraArriscada = palavra;
+			this.palavraArriscada = palavra.toLowerCase();
 		}
 	}
 
@@ -50,12 +51,12 @@ public class Item extends ObjetoDominioImpl {
 		return this.palavraArriscada != null;
 	}
 	
-	public void exibir() {
-		this.palavra.exibir();
+	public void exibir(Object contexto) {
+		this.palavra.exibir(posicoesDescobertas, contexto);
 	}
 	
 	public boolean acertou() {
-		return this.palavra.comparar(this.palavraArriscada);
+		return (this.palavraArriscada != null) && (this.palavra.comparar(this.palavraArriscada));
 	}
 
 	public boolean descobriu() {
@@ -76,32 +77,37 @@ public class Item extends ObjetoDominioImpl {
 
 	public int qtdeLetrasEncobertas() {
 		int qtd = 0;
-		for(int c = 0; c < this.posicoesDescobertas.length; c++) {
-			if (!this.posicoesDescobertas[c]) {
+		for(int c = 0; c < this.posicoesDescobertas.length; c++)
+			if (!this.posicoesDescobertas[c])
 				qtd++;
-			}
-		}
 		return qtd;
 	}
 	
 	public Letra[] getLetrasEncobertas(){
-		HashSet<Letra> letrasEncobertas = new HashSet<Letra>();
-		for(int c = 0; c < this.palavra.getTamanho(); c++) {
-			if(!this.posicoesDescobertas[c]) {
-				letrasEncobertas.add(this.palavra.getLetra(c));
-			}
-		}	
-		return (Letra[])letrasEncobertas.toArray();
+		return this.getLetrasPorStatus(false);
 	}
 	
 	public Letra[] getLetrasDescobertas() {
-		HashSet<Letra> letrasDescobertas = new HashSet<Letra>();
+		return this.getLetrasPorStatus(true);
+	}
+
+	
+	private Letra[] getLetrasPorStatus(Boolean status) {
+		HashSet<Letra> escolhidas = new HashSet<Letra>();
 		for(int c = 0; c < this.palavra.getTamanho(); c++) {
-			if(this.posicoesDescobertas[c]) {
-				letrasDescobertas.add(this.palavra.getLetra(c));
+			if(this.posicoesDescobertas[c] == status) {
+				escolhidas.add(this.palavra.getLetra(c));
 			}
 		}	
-		return (Letra[])letrasDescobertas.toArray();
+		Letra[] letrasEscolhidas = new Letra[escolhidas.size()];
+		Iterator<Letra> it = escolhidas.iterator();
+		int c = 0;
+		while(it.hasNext()) {
+			letrasEscolhidas[c] = it.next();
+			c++;
+		}
+		
+		return letrasEscolhidas;
 	}
 
 }

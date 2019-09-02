@@ -44,6 +44,10 @@ public class MemoriaTemaRepository implements TemaRepository {
 	@Override
 	public Tema[] getTodos() {
 		Tema[] temas = new Tema[this.pool.size()];
+		
+		if(temas.length < 1)
+			return temas;
+		
 		Iterator<Tema> itTema = this.pool.values().iterator();
 		for(int t = 0; t < this.pool.size(); t++) {
 			temas[t] = itTema.next();
@@ -53,6 +57,10 @@ public class MemoriaTemaRepository implements TemaRepository {
 
 	@Override
 	public Tema getPorNome(String nome) {
+		
+		if(this.pool.size() < 1)
+			return null;
+		
 		Iterator<Tema> temas = this.pool.values().iterator();
 		while(temas.hasNext()) {
 			Tema tema = temas.next();
@@ -71,6 +79,10 @@ public class MemoriaTemaRepository implements TemaRepository {
 	@Override
 	public long getProximoId() {
 		Long max = (long) 1;
+		
+		if(this.pool.size() < 1)
+			return max;
+
 		Iterator<Tema> temas = this.pool.values().iterator();
 		while(temas.hasNext()) {
 			Long id = temas.next().getId(); 

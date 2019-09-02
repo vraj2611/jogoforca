@@ -42,17 +42,11 @@ public class Palavra extends ObjetoDominioImpl {
 	}
 	
 	public boolean comparar(String palavra) {
-		if (this.letras.length != palavra.length()) {
-			return false;
-		}
-		
-		for(int c = 0; c < palavra.length(); c++) {
-			if (this.letras[c].getCodigo() != palavra.charAt(c)) {
-				return false;
-			}
-		}
-		
-		return true;
+		String p = "";
+		for(Letra l : this.letras)
+			p = p.concat(String.valueOf(l.getCodigo()));
+	
+		return p.toLowerCase().equals(palavra.toLowerCase());
 	}
 	
 	public Tema getTema() {
@@ -62,7 +56,7 @@ public class Palavra extends ObjetoDominioImpl {
 	public int[] tentar(char codigo) {
 		ArrayList<Integer> posicoesList  = new ArrayList<Integer>();
 		for(int c = 0; c < this.letras.length ; c++) {
-			if (codigo == this.letras[c].getCodigo()) {
+			if (codigo == this.letras[c].toString().toLowerCase().charAt(0)) {
 				posicoesList.add(c);
 			}
 		}
@@ -71,26 +65,25 @@ public class Palavra extends ObjetoDominioImpl {
 		for (int c = 0; c < posicoesList.size() ; c++) {
 			posicoes[c] = posicoesList.get(c);
 		}
-
 		return posicoes;
 	}
 	
-	public void exibir(boolean[] posicoes) {
+	public void exibir(boolean[] posicoes, Object contexto) {
 		for(int c = 0; c < posicoes.length ; c++) {
 			if (posicoes[c]) {
 				Letra letra = this.letras[c];
-				letra.exibir(null);
+				letra.exibir(contexto);
 			} else {
-				this.encoberta.exibir(null);
+				this.encoberta.exibir(contexto);
 			}
 			
 		}	
 	}
 	
-	public void exibir() {
+	public void exibir(Object contexto) {
 		for(int c = 0; c < this.letras.length ; c++) {
 			Letra letra = this.letras[c];
-			letra.exibir(null);
+			letra.exibir(contexto);
 		}
 	}
 	

@@ -46,7 +46,10 @@ public class MemoriaRodadaRepository implements RodadaRepository {
 
 	@Override
 	public Rodada[] getPorJogador(Jogador jogador) {
-		HashSet<Rodada> rodadasDoJogador = new HashSet<Rodada>();
+		if(this.pool.size() < 1)
+			return new Rodada[0];
+		
+		HashSet<Rodada> rodadasDoJogador = new HashSet<Rodada>();		
 		Iterator<Rodada> rodadas = this.pool.values().iterator();
 		while(rodadas.hasNext()) {
 			Rodada rodada = rodadas.next();
@@ -65,6 +68,10 @@ public class MemoriaRodadaRepository implements RodadaRepository {
 	@Override
 	public long getProximoId() {
 		Long max = (long) 1;
+		
+		if(this.pool.size() < 1)
+			return max;		
+		
 		Iterator<Rodada> rodadas = this.pool.values().iterator();
 		while(rodadas.hasNext()) {
 			Long id = rodadas.next().getId(); 

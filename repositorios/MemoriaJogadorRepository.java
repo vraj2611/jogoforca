@@ -46,6 +46,9 @@ public class MemoriaJogadorRepository implements JogadorRepository {
 
 	@Override
 	public Jogador getPorNome(String nome) {
+		if(this.pool.size() < 1)
+			return null;
+		
 		Iterator<Jogador> jogadores = this.pool.values().iterator();
 		while(jogadores.hasNext()) {
 			Jogador jogador = jogadores.next();
@@ -64,6 +67,10 @@ public class MemoriaJogadorRepository implements JogadorRepository {
 	@Override
 	public long getProximoId() {
 		Long max = (long) 1;
+		
+		if(this.pool.size() < 1)
+			return max;
+		
 		Iterator<Jogador> jogadores = this.pool.values().iterator();
 		while(jogadores.hasNext()) {
 			Long id = jogadores.next().getId();

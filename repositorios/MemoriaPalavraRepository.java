@@ -2,7 +2,6 @@ package repositorios;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 
 import dominio.Palavra;
@@ -52,6 +51,10 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 	@Override
 	public long getProximoId() {
 		Long max = (long) 1;
+		
+		if(this.pool.size() < 1)
+			return max;
+
 		Iterator<Palavra> palavras = this.pool.values().iterator();
 		while(palavras.hasNext()) {
 			Long id = palavras.next().getId();
@@ -77,11 +80,18 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 
 	@Override
 	public Palavra[] getTodas() {
+		if(this.pool.size() < 1)
+			return new Palavra[0];
+		
 		return (Palavra[])this.pool.values().toArray();
 	}
 
 	@Override
 	public Palavra[] getPorTema(Tema tema) {
+		
+		if(this.pool.size() < 1)
+			return new Palavra[0];
+		
 		ArrayList<Palavra> palavrasDoTema = new ArrayList<Palavra>();
 		Iterator<Palavra> palavras = this.pool.values().iterator();
 		while(palavras.hasNext()) {

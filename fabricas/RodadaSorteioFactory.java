@@ -1,5 +1,7 @@
 package fabricas;
 
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 import dominio.Jogador;
@@ -31,21 +33,26 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl implements RodadaFac
 		Random random = new Random();
 		
 		Tema[] temas = this.getTemaRepository().getTodos();
-		Tema tema = temas[random.nextInt(temas.length) - 1];
+		Tema tema = temas[random.nextInt(temas.length)];
 		
 		Palavra[] palavrasDoTema = this.getPalavraRepository().getPorTema(tema);
 		
-		int quantPalavras = random.nextInt(2) + 1;
-		Palavra[] palavras = new Palavra[quantPalavras];
+		int quantPalavras = random.nextInt(Rodada.getMaxPalavras()) + 1;
+		HashSet<Palavra> escolhidas = new HashSet<Palavra>();
+		while(escolhidas.size() < quantPalavras) {
+			escolhidas.add(
+				palavrasDoTema[random.nextInt(palavrasDoTema.length - 1)]);
+		}	
 		
-		for( int p = 0; p < quantPalavras; p++) {
-			Palavra escolhida = null;
-			while(escolhida == null && !palavras[p].equals(escolhida)) {
-				escolhida = palavrasDoTema[random.nextInt(palavrasDoTema.length) - 1];
-				palavras[p] = escolhida;
-			}
+		Palavra[] palavras =  new Palavra[quantPalavras];
+		int p = 0;
+		Iterator<Palavra> it = escolhidas.iterator();
+		while(it.hasNext()) {
+			palavras[p] = it.next();
+			p++;
 		}
-		return Rodada.criar(this.getProximoId() , palavras, jogador);
+		
+		return Rodada.criar(this.getRodadaRepository().getProximoId() , palavras, jogador);
 	
 	}
 

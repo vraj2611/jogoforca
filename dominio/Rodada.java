@@ -1,19 +1,17 @@
 package dominio;
 
 import java.util.HashSet;
-import java.io.PrintStream;
 
 public class Rodada extends ObjetoDominioImpl {
 	
-	private static int maxPalavras;
-	private static int maxErros;
-	private static int pontosQuandoDescobreTodasAsPalavras; 
-	private static int pontosPorLetraEncoberta;
+	private static int maxPalavras = 3;
+	private static int maxErros = 10;
+	private static int pontosQuandoDescobreTodasAsPalavras = 100; 
+	private static int pontosPorLetraEncoberta = 15;
 	
 	private Jogador jogador;
 	private Item[] itens;
 	private Letra[] erradas;
-	private PrintStream printStream;
 	
 	private static BonecoFactory bonecoFactory;
 	
@@ -69,13 +67,12 @@ public class Rodada extends ObjetoDominioImpl {
 		super(id);
 		this.jogador = jogador;
 		int qtdPalavras = palavras.length;
-		if (qtdPalavras > maxPalavras) {
-			qtdPalavras = maxPalavras;
-		}
 		this.itens = new Item[qtdPalavras];
 		for(int c = 0; c < qtdPalavras; c++) {
 			this.itens[c] = Item.criar(id, palavras[c]);
 		}
+		this.erradas = new Letra[0];
+		
 	}
 	
 	private Rodada(long id, Item[] itens, Letra[] erradas, Jogador jogador) {
@@ -105,21 +102,23 @@ public class Rodada extends ObjetoDominioImpl {
 		return this.jogador;
 	}
 
-	public void exibirPalavras() {
-		for(int c = 0; c < this.itens.length; c++) {
-			this.itens[c].getPalavra().exibir();
-		}
+	public void exibirBoneco(Object contexto) {
+		bonecoFactory.getBoneco().exibir(contexto, this.getQtdeErros());
+	}
+	
+	public void exibirItens(Object contexto) {
+		for(Item i : this.itens)
+			i.exibir(contexto);	
+	}
 
-	}
-	
-	public void exibirBoneco() {
-		bonecoFactory.getBoneco().exibir(this.printStream, this.getQtdeErros());
-	}
-	
-	public void exibirItens() {
-		for(int c = 0; c < this.itens.length; c++) {
-			this.itens[c].exibir();
-		}		
+	public void exibirPalavras(Object contexto) {
+		for(Item i : this.itens) {
+			Palavra p = i.getPalavra();
+			boolean[] posicoes = new boolean[p.getTamanho()]; 
+			for( int b = 0; b < p.getTamanho(); b++)
+				posicoes[b] = true;
+			p.exibir(posicoes, contexto);
+		}
 	}
 	
 	public void arriscar(String[] palavras) {
@@ -128,18 +127,14 @@ public class Rodada extends ObjetoDominioImpl {
 				this.itens[i].arriscar(palavras[i]);
 			}
 		}
-		if(this.encerrou()) {
+		if(this.encerrou())
 			this.jogador.setPontuacao(this.calcularPontos());
-		}
 	}
 		
 	public int getQtdeAcertos() {
 		int acertos = 0;
-		
-		for(int i = 0; i < this.itens.length; i++) {
-			acertos += this.itens[i].qtdeLetrasEncobertas();
-		}
-		
+		for(Item i : this.itens)
+			acertos += i.qtdeLetrasEncobertas();		
 		return acertos;
 	}
 	
@@ -156,11 +151,9 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public boolean descobriu() {
-		for(Item i : this.itens) {
-			if (!i.descobriu()) {
+		for(Item i : this.itens)
+			if (!i.descobriu())
 				return false;
-			}
-		}
 		return true;
 	}
 	
@@ -169,14 +162,13 @@ public class Rodada extends ObjetoDominioImpl {
 	}
 	
 	public int calcularPontos() {
-		if(!this.descobriu()) {
+		if(!this.descobriu())
 			return 0;
-		}
 		
 		int qtdLetrasEncobertas = 0;
-		for(Item i : this.itens) {
+		for(Item i : this.itens)
 			qtdLetrasEncobertas += i.qtdeLetrasEncobertas();
-		}
+
 		return pontosQuandoDescobreTodasAsPalavras + (pontosPorLetraEncoberta * qtdLetrasEncobertas);
 		
 	}
@@ -197,24 +189,39 @@ public class Rodada extends ObjetoDominioImpl {
 
 	public Letra[] getTentativas() {
 		HashSet<Letra> tentativas = new HashSet<Letra>();
-		for(Letra l : this.getCertas()) {
+		for(Letra l : this.getCertas())
 			tentativas.add(l);
-		}
-		for(Letra l : this.getErradas()) {
+		
+		for(Letra l : this.getErradas())
 			tentativas.add(l);
+		
+		Letra[] letras = new Letra[tentativas.size()];
+		int q = 0;
+		for(Letra l : tentativas) {
+			letras[q] = l;
+			q++;
 		}
-		return (Letra[])tentativas.toArray();
+		
+		return letras;
 	}
 	
 	public void tentar(char codigo) {
-		if (!this.encerrou()) {
-			for(int c = 0; c < this.itens.length; c++) {
-				this.itens[c].tentar(codigo);
-			}
+		Boolean errou = true;
+		if (!this.encerrou())
+			for(Item i : this.itens)
+				if(i.tentar(codigo))
+					errou = false;
+		if(errou) {
+			Letra[] novas = new Letra[this.erradas.length + 1];
+			for(int l = 0; l < this.erradas.length ; l++)
+				novas[l] = this.erradas[l];
+			Letra nova = Palavra.getLetraFactory().getLetra(codigo);
+			novas[novas.length - 1] = nova;
+			this.erradas = novas;
 		}
-		if(this.encerrou()) {
+		
+		if(this.encerrou())
 			this.jogador.setPontuacao(this.calcularPontos());
-		}
 	}
 
 }

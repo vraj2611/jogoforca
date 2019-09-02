@@ -1,10 +1,8 @@
 package servicos;
 
-import java.io.IOException;
-
 public class KeyBoardService {
 
-	public static String readline() throws IOException {
+	public static String readline(){
 		StringBuffer input = new StringBuffer();
 		try {
 			char in = (char) System.in.read();
